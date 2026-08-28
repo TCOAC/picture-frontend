@@ -14,11 +14,14 @@
     "lint": "run-s \"lint:*\"",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
-    "format": "prettier --write --experimental-cli src/"
+    "format": "prettier --write --experimental-cli src/",
+    "openapi": "node openapi.config.js"
   },
   "dependencies": {
     "ant-design-vue": "^4.2.6",
+    "axios": "^1.20.0",
     "pinia": "^4.0.2",
+    "tslib": "^2.8.1",
     "vue": "^3.5.40",
     "vue-router": "^5.2.0"
   },
@@ -27,6 +30,7 @@
     "@tsconfig/node24": "^24.0.4",
     "@types/jsdom": "^28.0.3",
     "@types/node": "^24.13.3",
+    "@umijs/openapi": "^1.14.1",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vitejs/plugin-vue-jsx": "^5.1.6",
     "@vitest/eslint-plugin": "^1.6.23",
