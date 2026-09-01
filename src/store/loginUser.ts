@@ -1,17 +1,23 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { getLoginUserUsingGet } from '@api/userController'
+import ACCESS_ENUM from '@/access/accessEnum.ts'
 
 export const useLoginUserStore = defineStore('loginUser', () => {
-  const loginUser = ref<any>({
+  const loginUser = ref<API.LoginUserVO>({
     userName: '未登录',
   })
 
   async function fetchLoginUser() {
-    // 测试用户登录，3 秒后登录
-    setTimeout(() => {
-      loginUser.value = { userName: '测试用户', id: 1 }
-    }, 3000)
+    const res = await getLoginUserUsingGet()
+    if (res.data.code === 0) {
+      loginUser.value = res.data.data!
+    } else {
+      // 未登录：显式标记为 notLogin
+      loginUser.value = { userRole: ACCESS_ENUM.NOT_LOGIN }
+    }
   }
+
 
   function setLoginUser(newLoginUser: any) {
     loginUser.value = newLoginUser

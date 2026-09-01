@@ -3,7 +3,7 @@
     <a-layout style="min-height: 100vh">
       <a-layout-header class="header"><GlobalHeader /></a-layout-header>
       <a-layout-content class="content"><router-view /></a-layout-content>
-      <a-layout-footer class="footer">end</a-layout-footer>
+      <a-layout-footer class="footer">云图库 ©2026 by YX</a-layout-footer>
     </a-layout>
   </div>
 </template>
@@ -14,6 +14,7 @@ import GlobalHeader from '@/components/GlobalHeader.vue'
 
 <style scoped>
 #basicLayout {
+  background: #f5f6f7;
 }
 
 #basicLayout .header {
@@ -27,9 +28,14 @@ import GlobalHeader from '@/components/GlobalHeader.vue'
 }
 
 #basicLayout .content {
-  background: linear-gradient(to right, #fefefe, #fff);
-  margin-bottom: 28px;
+  /* 内容变成居中的白色卡片 */
+  width: 1200px;
+  margin: 0 auto 28px;
   padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  min-height: calc(100vh - 180px);
 }
 
 #basicLayout .footer {
