@@ -70,13 +70,14 @@ const menuToRouteItem = (menu: any) => {
 
 // 过滤菜单项
 const filterMenus = (menus = [] as MenuProps['items']) => {
-  return menus?.filter((menu) => {
+  return (menus ?? []).filter((menu) => {
     const item = menuToRouteItem(menu)
     // 明确不展示在菜单里的路由，直接过滤
     if (item?.meta?.hideInMenu) {
       return false
     }
     // 根据权限过滤菜单：有权限返回 true，保留该菜单
+
     return checkAccess(
       loginUserStore.loginUser,
       (item?.meta?.access as string) ?? ACCESS_ENUM.NOT_LOGIN,
@@ -85,7 +86,7 @@ const filterMenus = (menus = [] as MenuProps['items']) => {
 }
 
 // 展示在菜单的路由数组
-const items = computed<MenuProps['items']>(() => filterMenus(originItems))
+const items = computed(() => filterMenus(originItems))
 </script>
 
 <template>
