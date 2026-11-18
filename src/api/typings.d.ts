@@ -29,6 +29,24 @@ declare namespace API {
     message?: string
   }
 
+  type BaseResponsePictureVO_ = {
+    code?: number
+    data?: PictureVO
+    message?: string
+  }
+
+  type PictureVO = {
+    id?: string
+    url?: string
+    name?: string
+    introduction?: string
+    category?: string
+    tags?: string[]
+    userId?: string
+    spaceId?: string
+    reviewStatus?: number
+  }
+
   type BaseResponseUser_ = {
     code?: number
     data?: User
@@ -93,6 +111,7 @@ declare namespace API {
 
   type UserAddRequest = {
     userAccount?: string
+    userPassword?: string
     userAvatar?: string
     userName?: string
     userProfile?: string

@@ -1,0 +1,3 @@
+<script setup lang="ts">
+import { onMounted,ref } from 'vue';import {useRoute} from 'vue-router';import {api,media,type Picture} from '@/api/gallery';const route=useRoute(),picture=ref<Picture>(),error=ref('');onMounted(async()=>{try{picture.value=await api<Picture>(`/picture/share/get?code=${route.params.code}`,undefined,'GET')}catch(e){error.value=(e as Error).message}})
+</script><template><div v-if="picture" class="share-page"><img :src="media(picture,false,route.params.code as string)" :alt="picture.name"/><h1>{{picture.name}}</h1><p>{{picture.introduction}}</p><RouterLink :to="`/picture/${picture.id}?code=${route.params.code}`">查看详情</RouterLink></div><a-result v-else-if="error" status="404" title="分享链接已失效" :sub-title="error"/></template>

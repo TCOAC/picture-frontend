@@ -5,6 +5,7 @@ import 'ant-design-vue/dist/reset.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import '@/access'
+import './style.css'
 
 const app = createApp(App)
 app.use(Antd)

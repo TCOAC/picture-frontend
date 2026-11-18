@@ -7,6 +7,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: { host: '127.0.0.1', proxy: { '/api': { target: 'http://127.0.0.1:8123', changeOrigin: true, ws: true } } },
   plugins: [
     vue(),
     vueJsx(),

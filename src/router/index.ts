@@ -5,6 +5,13 @@ import UserRegisterPage from '@/pages/user/UserRegisterPage.vue'
 import UserManagePage from '@/pages/admin/UserManagePage.vue'
 import NoAuthPage from '@/pages/NoAuthPage.vue'
 import ACCESS_ENUM from '@/access/accessEnum'
+import GalleryPage from '@/pages/GalleryPage.vue'
+import UploadPage from '@/pages/UploadPage.vue'
+import PictureDetailPage from '@/pages/PictureDetailPage.vue'
+import SharePage from '@/pages/SharePage.vue'
+import SpacesPage from '@/pages/SpacesPage.vue'
+import AnalysisPage from '@/pages/AnalysisPage.vue'
+import SimilarPage from '@/pages/SimilarPage.vue'
 
 
 const router = createRouter({
@@ -13,8 +20,18 @@ const router = createRouter({
     {
       path: '/',
       name: '主页',
-      component: HomePage,
+      component: GalleryPage,
     },
+    { path: '/upload', component: UploadPage, meta: { access: ACCESS_ENUM.USER } },
+    { path: '/my', component: GalleryPage, meta: { access: ACCESS_ENUM.USER } },
+    { path: '/picture/:id', component: PictureDetailPage },
+    { path: '/share/:code', component: SharePage },
+    { path: '/space', component: SpacesPage, meta: { access: ACCESS_ENUM.USER } },
+    { path: '/space/:id', component: GalleryPage, meta: { access: ACCESS_ENUM.USER } },
+    { path: '/analysis', component: AnalysisPage, meta: { access: ACCESS_ENUM.USER } },
+    { path: '/similar/:id', component: SimilarPage },
+    { path: '/admin/pictures', component: GalleryPage, meta: { access: ACCESS_ENUM.ADMIN } },
+    { path: '/admin/pictureManage', redirect: '/admin/pictures', meta: { access: ACCESS_ENUM.ADMIN } },
     {
       path: '/user/login',
       name: '用户登录',

@@ -45,6 +45,11 @@ const doLogout = async () => {
 // 菜单列表
 const originItems = [
   {
+    key: '/my', label: '我的作品', title: '我的作品',
+  },
+  { key: '/space', label: '我的空间', title: '我的空间' },
+  { key: '/admin/pictures', label: '图片审核', title: '图片审核' },
+  {
     key: '/',
     icon: () => h(HomeOutlined),
     label: '主页',

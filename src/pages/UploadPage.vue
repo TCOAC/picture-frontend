@@ -1,0 +1,23 @@
+<script setup lang="ts">
+import { ref, reactive, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { message } from 'ant-design-vue'
+import { api, type Picture, type Space } from '@/api/gallery'
+import { useLoginUserStore } from '@/store/loginUser'
+const route = useRoute(), router = useRouter(), store = useLoginUserStore()
+const form = reactive({ name: '', introduction: '', category: '', tags: '', spaceId: route.query.spaceId ? String(route.query.spaceId) : undefined as string | undefined, url: '' })
+const file = ref<File>(), preview = ref(''), busy = ref(false), error = ref(''), tab = ref('file'), spaces = ref<Space[]>([]), batch = ref(''), batchResults = ref<{url:string;success:boolean;message?:string}[]>([])
+onMounted(async () => { try { spaces.value = await api<Space[]>('/space/mine', undefined, 'GET') } catch (e) { error.value = (e as Error).message } })
+function choose(value?: File) { if (!value) return; if (value.size > 2 * 1024 * 1024) { message.error('图片不能超过 2MB'); return }; file.value = value; if (preview.value) URL.revokeObjectURL(preview.value); preview.value = URL.createObjectURL(value); if (!form.name) form.name = value.name.replace(/\.[^.]+$/, '') }
+async function submit() {
+  busy.value = true; error.value = ''
+  try {
+    if (tab.value === 'batch') { batchResults.value = await api('/picture/import/batch', { url: batch.value.startsWith('http') && !batch.value.includes('\n') ? batch.value.trim() : undefined, urls: batch.value.includes('\n') ? batch.value.split('\n').map(x=>x.trim()).filter(Boolean) : undefined, spaceId: form.spaceId }); return }
+    let p: Picture
+    if (tab.value === 'url') p = await api('/picture/import/url', { url: form.url, name: form.name || undefined, spaceId: form.spaceId })
+    else { if (!file.value) throw new Error('请先选择图片'); const data = new FormData(); data.append('file', file.value); if (form.spaceId) data.append('spaceId', form.spaceId); data.append('name', form.name); data.append('introduction', form.introduction); data.append('category', form.category); data.append('tags', JSON.stringify(form.tags.split(/[,，]/).map(x=>x.trim()).filter(Boolean))); p = await api('/picture/upload', data) }
+    message.success('上传成功'); await router.push(`/picture/${p.id}`)
+  } catch (e) { error.value = (e as Error).message } finally { busy.value = false }
+}
+</script>
+<template><div class="page-heading"><span class="eyebrow">CREATE / UPLOAD</span><h1>把灵感存进云端</h1><p class="muted">支持 JPG、PNG、WebP，每张不超过 2MB / 2500 万像素。</p></div><div class="upload-layout"><section class="panel"><a-tabs v-model:active-key="tab"><a-tab-pane key="file" tab="本地上传"><label class="drop-zone" @dragover.prevent @drop.prevent="choose($event.dataTransfer?.files[0])"><img v-if="preview" :src="preview" alt="上传预览" /><template v-else><span class="upload-mark">＋</span><h3>点击选择或拖拽图片到这里</h3><p>创作的下一站，从一张图片开始</p></template><input type="file" accept="image/png,image/jpeg,image/webp" aria-label="选择图片" @change="choose(($event.target as HTMLInputElement).files?.[0])" /></label></a-tab-pane><a-tab-pane key="url" tab="链接导入"><a-input v-model:value="form.url" placeholder="https://example.com/image.jpg" /><p class="muted">请使用可直接访问的公网图片链接。</p></a-tab-pane><a-tab-pane v-if="store.loginUser.userRole === 'admin'" key="batch" tab="批量采集"><a-textarea v-model:value="batch" :rows="9" placeholder="输入一个网页地址自动采集图片，或每行一个图片链接（最多 10 张）" /><a-list v-if="batchResults.length" :data-source="batchResults"><template #renderItem="{item}"><a-list-item>{{ item.success ? '✓ 成功' : '× '+item.message }} — {{ item.url }}</a-list-item></template></a-list></a-tab-pane></a-tabs></section><section class="panel"><a-form layout="vertical" @finish="submit"><a-form-item label="保存位置"><a-select v-model:value="form.spaceId" placeholder="公共图库" allow-clear :options="spaces.map(s=>({label:s.spaceName,value:String(s.id)}))" /></a-form-item><template v-if="tab !== 'batch'"><a-form-item label="图片名称"><a-input v-model:value="form.name" :maxlength="128" /></a-form-item><a-form-item v-if="tab === 'file'" label="简介"><a-textarea v-model:value="form.introduction" :maxlength="800" :rows="3" /></a-form-item><a-form-item v-if="tab === 'file'" label="分类"><a-input v-model:value="form.category" :maxlength="64" /></a-form-item><a-form-item v-if="tab === 'file'" label="标签"><a-input v-model:value="form.tags" placeholder="风景，自然，灵感" /></a-form-item></template><a-alert v-if="error" type="error" :message="error" show-icon class="mb" /><a-button type="primary" html-type="submit" block size="large" :loading="busy">{{ tab === 'batch' ? '开始采集' : '上传并保存' }}</a-button><p class="muted">公共图库的作品由管理员审核后展示。</p></a-form></section></div></template>

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/store/loginUser'
 import { userLoginUsingPost } from '@api/userController'
 
 const router = useRouter()
+const route = useRoute()
 const loginUserStore = useLoginUserStore()
 
 // 用于接受表单输入的值
@@ -27,7 +28,7 @@ const handleSubmit = async (values: any) => {
     message.success('登录成功')
     // 跳转到主页
     router.push({
-      path: '/',
+      path: typeof route.query.redirect === 'string' && route.query.redirect.startsWith('/') ? route.query.redirect : '/',
       replace: true,
     })
   } else {
