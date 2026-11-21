@@ -80,6 +80,7 @@ declare namespace API {
     userName?: string
     userProfile?: string
     userRole?: string
+    vipExpireTime?: string
   }
 
   type PageUserVO_ = {

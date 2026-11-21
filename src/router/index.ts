@@ -13,6 +13,7 @@ import SpacesPage from '@/pages/SpacesPage.vue'
 import AnalysisPage from '@/pages/InsightsPage.vue'
 import SimilarPage from '@/pages/SimilarPage.vue'
 import SpaceManagePage from '@/pages/admin/SpaceManagePage.vue'
+import MembershipPage from '@/pages/MembershipPage.vue'
 
 
 const router = createRouter({
@@ -30,6 +31,7 @@ const router = createRouter({
     { path: '/space', component: SpacesPage, meta: { access: ACCESS_ENUM.USER } },
     { path: '/space/:id', component: GalleryPage, meta: { access: ACCESS_ENUM.USER } },
     { path: '/analysis', component: AnalysisPage, meta: { access: ACCESS_ENUM.USER } },
+    { path: '/membership', component: MembershipPage, meta: { access: ACCESS_ENUM.USER } },
     { path: '/admin/analysis', component: AnalysisPage, meta: { access: ACCESS_ENUM.ADMIN } },
     { path: '/similar/:id', component: SimilarPage },
     { path: '/admin/pictures', component: GalleryPage, meta: { access: ACCESS_ENUM.ADMIN } },

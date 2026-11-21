@@ -48,6 +48,7 @@ const originItems = [
     key: '/my', label: '我的作品', title: '我的作品',
   },
   { key: '/space', label: '我的空间', title: '我的空间' },
+  { key: '/membership', label: '会员', title: '会员' },
   { key: '/admin/pictures', label: '图片审核', title: '图片审核' },
   { key: '/admin/spaces', label: '空间管理', title: '空间管理' },
   { key: '/admin/analysis', label: '全站分析', title: '全站分析' },
