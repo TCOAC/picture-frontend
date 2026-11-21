@@ -4,9 +4,7 @@ import dayjs from 'dayjs'
 import { deleteUserUsingPost, listUserVoByPageUsingPost } from '@api/userController'
 import { computed, onMounted, reactive, ref } from 'vue'
 
-// 表格列配置：图 2 + 图 3
-// title = 表头显示的文字；dataIndex = 从数据里取哪个字段
-// 操作列没有对应数据字段，所以用 key
+// 表格列配置。
 const columns = [
   { title: 'id', dataIndex: 'id' },
   { title: '账号', dataIndex: 'userAccount' },
@@ -19,8 +17,7 @@ const columns = [
   { title: '操作', key: 'action' },
 ]
 
-// 数据：图 4 上半
-// 存储表格要展示的数据
+// 表格数据。
 const dataList = ref<API.UserVO[]>([])
 // 存储数据的总数
 const total = ref(0)
@@ -44,8 +41,7 @@ const pagination = computed(() => {
   }
 })
 
-// 获取数据：图 4 下半 + 图 5
-// 获取数据的异步函数
+// 获取表格数据。
 const fetchData = async () => {
   const res = await listUserVoByPageUsingPost({
     ...searchParams,

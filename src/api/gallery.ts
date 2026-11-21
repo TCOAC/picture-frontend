@@ -23,3 +23,11 @@ export function media(p: Picture, thumbnail = false, code?: string, download = f
 }
 export function size(value: string | number) { const n = Number(value); return n < 1024 * 1024 ? `${(n / 1024).toFixed(1)} KB` : `${(n / 1024 / 1024).toFixed(1)} MB` }
 export const status = ['待审核', '已通过', '已驳回']
+
+export function searchByColor(picColor: string, spaceId?: Id) {
+  return api<Picture[]>('/picture/search/color', { picColor, spaceId })
+}
+
+export function searchByPicture(pictureId: Id, spaceId?: Id) {
+  return api<{ records: Picture[]; searched: number; total: number }>('/picture/search/picture', { pictureId, spaceId })
+}

@@ -4,6 +4,8 @@ test('public gallery opens and exposes its search and upload entry points', asyn
   await page.route('**/api/**', async (route) => {
     if (route.request().url().includes('/user/get/login')) {
       await route.fulfill({ json: { code: 40100, message: '未登录' } })
+    } else if (route.request().url().includes('/picture/tag_category')) {
+      await route.fulfill({ json: { code: 0, data: { categoryList: [], tagList: [] } } })
     } else {
       await route.fulfill({ json: { code: 0, data: { records: [], total: '0', current: '1' } } })
     }

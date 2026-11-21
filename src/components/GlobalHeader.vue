@@ -49,6 +49,8 @@ const originItems = [
   },
   { key: '/space', label: '我的空间', title: '我的空间' },
   { key: '/admin/pictures', label: '图片审核', title: '图片审核' },
+  { key: '/admin/spaces', label: '空间管理', title: '空间管理' },
+  { key: '/admin/analysis', label: '全站分析', title: '全站分析' },
   {
     key: '/',
     icon: () => h(HomeOutlined),
@@ -59,11 +61,6 @@ const originItems = [
     key: '/admin/userManage',
     label: '用户管理',
     title: '用户管理',
-  },
-  {
-    key: 'others',
-    label: h('a', { href: 'https://github.com/TCOAC', target: '_blank' }, 'Github'),
-    title: 'Github',
   },
 ]
 
@@ -100,7 +97,7 @@ const items = computed(() => filterMenus(originItems))
     <a-col flex="160px">
       <RouterLink to="/">
         <div class="title-bar">
-          <img class="logo" src="../assets/logo.png" alt="logo" />
+          <span class="logo-mark" aria-hidden="true">✦</span>
           <div class="title">云图库</div>
         </div>
       </RouterLink>
@@ -176,7 +173,15 @@ const items = computed(() => filterMenus(originItems))
   margin-left: 16px;
 }
 
-.logo {
-  height: 48px;
+.logo-mark {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #5553a0, #9d8cff);
+  color: #fff;
+  font-size: 26px;
+  box-shadow: 0 6px 16px #5553a033;
 }
 </style>
