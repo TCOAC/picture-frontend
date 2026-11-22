@@ -208,7 +208,7 @@ onMounted(loadSpaces)
   </a-modal>
 
   <a-modal v-model:open="membersOpen" :title="(currentSpace?.spaceName || '') + ' · 团队成员'" :footer="null" width="640px">
-    <a-form v-if="currentSpace && canManage(currentSpace)" layout="inline" class="member-form" @finish="addMember">
+    <a-form v-if="currentSpace && canManage(currentSpace)" layout="inline" class="member-form">
       <a-form-item><a-input v-model:value="memberAccount" placeholder="成员登录账号" aria-label="成员登录账号" /></a-form-item>
       <a-form-item>
         <a-select v-model:value="memberRole" aria-label="成员权限" style="width: 110px" :options="[
@@ -217,7 +217,7 @@ onMounted(loadSpaces)
           { label: '管理', value: 'admin' },
         ]" />
       </a-form-item>
-      <a-form-item><a-button type="primary" html-type="submit" :loading="saving">添加成员</a-button></a-form-item>
+      <a-form-item><a-button type="primary" :loading="saving" @click="addMember">添加成员</a-button></a-form-item>
     </a-form>
     <a-list :data-source="members" class="member-list">
       <template #renderItem="{ item }">
