@@ -19,6 +19,8 @@ const memberAccount = ref('')
 const memberRole = ref('editor')
 
 const hasPersonalSpace = computed(() => spaces.value.some((space) => space.spaceType === 0))
+const hasOwnedTeamSpace = computed(() => spaces.value.some((space) =>
+  space.spaceType === 1 && String(space.userId) === String(store.loginUser.id)))
 const canManage = (space: Space) => space.role === 'admin' || store.loginUser.userRole === 'admin'
 
 async function loadSpaces() {
@@ -169,7 +171,7 @@ onMounted(loadSpaces)
   </div>
   <div class="space-actions">
     <a-button :disabled="hasPersonalSpace" @click="openCreate(0)">＋ 新建个人空间</a-button>
-    <a-button type="primary" @click="openCreate(1)">＋ 新建团队空间</a-button>
+    <a-button type="primary" :disabled="hasOwnedTeamSpace" @click="openCreate(1)">＋ 新建团队空间</a-button>
   </div>
   <a-spin :spinning="loading">
     <div class="spaces-grid">

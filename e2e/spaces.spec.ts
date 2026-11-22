@@ -42,6 +42,7 @@ test('team owner invites a member and changes access', async ({ page }) => {
   })
 
   await page.goto('/space')
+  await expect(page.getByRole('button', { name: '＋ 新建团队空间' })).toBeDisabled()
   await page.getByRole('button', { name: '团队成员' }).click()
   await expect(page.getByRole('dialog').getByRole('heading', { name: '创建者' })).toBeVisible()
   await page.getByRole('textbox', { name: '成员登录账号' }).fill('designer')
