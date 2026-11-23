@@ -8,6 +8,7 @@ export interface Picture {
 }
 export interface Space { id: Id; spaceName: string; spaceType: number; spaceLevel: number; userId: Id; maxSize: string; maxCount: string; totalSize: string; totalCount: string; role?: string }
 export interface Member { id: Id; userId: Id; spaceRole: string; userName?: string; userAvatar?: string }
+export interface ExternalImageSearchResult { thumbUrl?: string; fromUrl?: string; title?: string }
 export interface Page<T> { records: T[]; total: string; current: string }
 export async function api<T>(path: string, data?: unknown, method = 'POST'): Promise<T> {
   const res = await request<{ code: number; data: T; message: string }>('/api' + path, method === 'GET' ? { method, params: data } : { method, data })
@@ -30,4 +31,8 @@ export function searchByColor(picColor: string, spaceId?: Id) {
 
 export function searchByPicture(pictureId: Id, spaceId?: Id) {
   return api<{ records: Picture[]; searched: number; total: number }>('/picture/search/picture', { pictureId, spaceId })
+}
+
+export function searchExternalByPicture(pictureId: Id) {
+  return api<ExternalImageSearchResult[]>('/picture/search/external', { pictureId })
 }
