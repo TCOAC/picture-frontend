@@ -9,12 +9,15 @@ const pics = ref<Picture[]>([])
 const external = ref<ExternalImageSearchResult[]>([])
 const busy = ref(false)
 const externalBusy = ref(false)
+const externalAvailable = ref(false)
 const note = ref('')
 const externalNote = ref('')
 
 async function loadSimilar() {
   busy.value = true
   try {
+    const source = await api<Picture>(`/picture/get/vo?id=${route.params.id}`, undefined, 'GET')
+    externalAvailable.value = !source.spaceId && source.reviewStatus === 1
     const data = await api<{ records: Picture[]; searched: number; total: number }>(
       '/picture/search/similar',
       { pictureId: route.params.id },
@@ -50,7 +53,8 @@ onMounted(loadSimilar)
     <span class="eyebrow">DISCOVER / SIMILARITY</span>
     <h1>相似的灵感</h1>
     <p>{{ note }}</p>
-    <a-button :loading="externalBusy" @click="loadExternal">外部以图搜图</a-button>
+    <a-button :loading="externalBusy" :disabled="!externalAvailable" @click="loadExternal">外部以图搜图</a-button>
+    <p v-if="!externalAvailable" class="muted">外部搜索仅支持已审核公开图片</p>
     <p v-if="externalNote" class="muted">{{ externalNote }}</p>
   </div>
   <a-spin :spinning="busy">
