@@ -10,9 +10,11 @@ test('owner can request AI outpainting from picture detail', async ({ page }) =>
     const url = route.request().url()
     if (url.includes('/user/get/login')) {
       await route.fulfill({ json: { code: 0, data: { id: '7', userRole: 'user', userName: '作者' } } })
-    } else if (url.includes('/picture/ai/outpaint')) {
+    } else if (url.includes('/picture/ai/outpaint/task')) {
       outpaintRequest = route.request().postDataJSON()
-      await route.fulfill({ json: { code: 0, data: { ...picture, picWidth: 8, picHeight: 6 } } })
+      await route.fulfill({ json: { code: 0, data: {
+        taskId: 'task-1', status: 'SUCCEEDED', result: { ...picture, picWidth: 8, picHeight: 6 },
+      } } })
     } else if (url.includes('/picture/get/vo')) {
       await route.fulfill({ json: { code: 0, data: picture } })
     } else {
