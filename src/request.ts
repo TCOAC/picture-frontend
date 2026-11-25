@@ -11,7 +11,11 @@ const myAxios = axios.create({
 // 全局请求拦截器
 myAxios.interceptors.request.use(
   function (config) {
-    // Do something before request is sent
+    const token = window.localStorage.getItem('picture_auth_token')
+    if (token) {
+      config.headers = config.headers || {}
+      config.headers.Authorization = `Bearer ${token}`
+    }
     return config
   },
   function (error) {

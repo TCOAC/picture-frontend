@@ -22,6 +22,7 @@ export const useLoginUserStore = defineStore('loginUser', () => {
 
   function setLoginUser(newLoginUser: any) {
     loginUser.value = newLoginUser
+    if (newLoginUser?.token) window.localStorage.setItem('picture_auth_token', newLoginUser.token)
   }
 
   return { loginUser, setLoginUser, fetchLoginUser }

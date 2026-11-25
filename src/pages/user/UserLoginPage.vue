@@ -24,6 +24,8 @@ const handleSubmit = async (values: any) => {
   const res = await userLoginUsingPost(values)
   // 登录成功，需要把 data 传给全局用户信息
   if (res.data.code === 0 && res.data.data) {
+    const token = (res.data.data as API.LoginUserVO & { token?: string }).token
+    if (token) window.localStorage.setItem('picture_auth_token', token)
     await loginUserStore.fetchLoginUser()
     message.success('登录成功')
     // 跳转到主页

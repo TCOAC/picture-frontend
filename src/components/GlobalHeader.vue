@@ -34,6 +34,7 @@ router.afterEach((to) => {
 const doLogout = async () => {
   const res = await userLogoutUsingPost()
   if (res.data.code === 0) {
+    window.localStorage.removeItem('picture_auth_token')
     loginUserStore.setLoginUser({ userName: '未登录' })
     message.success('退出登录成功')
     await router.push('/user/login')
