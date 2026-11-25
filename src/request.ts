@@ -14,6 +14,7 @@ myAxios.interceptors.request.use(
     const token = window.localStorage.getItem('picture_auth_token')
     if (token) {
       config.headers = config.headers || {}
+      config.headers.satoken = token
       config.headers.Authorization = `Bearer ${token}`
     }
     return config
